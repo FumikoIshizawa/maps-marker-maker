@@ -77,7 +77,7 @@ class MarkerMaker {
     foreach ($xpath->query('//div[@class="info_tmp"]') as $node) {
       $maps_url = $xpath->evaluate('string(.//iframe/@src)', $node);
       if (preg_match('/https:\/\/www\.google\.com\/maps\//', $maps_url)) {
-        $pattern = '/https:\/\/www\.google\.com\/maps\/embed\?pb=[a-zA-Z0-9!\.]+\!2d(\w+\.\w+)\!3d(\w+\.\w+)/';
+        $pattern = '/https:\/\/www\.google\.com\/maps\/embed\?pb=[a-zA-Z0-9!\.]+\!2d(-*\w+\.\w+)\!3d(-*\w+\.\w+)/';
         preg_match($pattern, $maps_url, $matches);
         $locations[] = [
           'lng' => $matches[1],
