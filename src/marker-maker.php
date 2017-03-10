@@ -12,6 +12,8 @@ class MarkerMaker {
       $center_lat = $locations[0]['lat'];
       $center_lng = $locations[1]['lng'];
       $markers_html = $this->create_markers_html($locations);
+      $map_color = '#00ffe6';
+      $map_color = get_site_option('mmm_map_color');
 
       return '<div id="locations_map" style="height:400px;"></div>
         <script>
@@ -20,7 +22,7 @@ class MarkerMaker {
             var styles = [
               {
                 stylers: [
-                  { hue: "#00ffe6" },
+                  { hue: "' . $map_color . '" },
                   { saturation: -20 }
                 ]
               },{
@@ -79,10 +81,12 @@ class MarkerMaker {
       if (preg_match('/https:\/\/www\.google\.com\/maps\//', $maps_url)) {
         $pattern = '/https:\/\/www\.google\.com\/maps\/embed\?pb=[a-zA-Z0-9!\.]+\!2d(-*\w+\.\w+)\!3d(-*\w+\.\w+)/';
         preg_match($pattern, $maps_url, $matches);
+        // $pattern = '/[ぁ-んァ-ヶーa-zA-Z0-9一-龠０-９、。 \n\r]+名称：(.*)/u';
+        // preg_match($pattern, $xpath->evaluate('string(.)', $node), $matched_detail);
         $locations[] = [
           'lng' => $matches[1],
           'lat' => $matches[2],
-          'detail' => $xpath->evaluate('string(.)', $node),
+          'detail' => '詳細は記事をご覧ください',
         ];
       }
     }
@@ -93,14 +97,13 @@ class MarkerMaker {
     $this->content = '';
     $count = 0;
     foreach ($locations as $location) {
-      $detail = $location['detail'];
       $this->content .= 'var marker' . $count . ' = new google.maps.Marker({
         position: {lat: ' . $location['lat'] . ', lng: ' . $location['lng'] . '},
         map: map,
         title: "Hello World!"
       });
       var infowindow = new google.maps.InfoWindow({
-        content: "詳細は記事をご覧ください"
+        content: "' . $location['detail'] . '"
       });
       marker' . $count . '.addListener("click", function() {
         infowindow.open(map, marker' . $count . ');

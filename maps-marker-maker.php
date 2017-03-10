@@ -46,6 +46,11 @@ function mmm_add_plugin_menu() {
     'mmm_api_key',
     'mmm_register_api_key'
   );
+  register_setting(
+    'mmm-group',
+    'mmm_map_color',
+    'mmm_register_map_color'
+  );
 }
 
 function mmm_show_plugin_page() {
