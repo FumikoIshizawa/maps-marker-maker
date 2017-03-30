@@ -81,12 +81,17 @@ class MarkerMaker {
       if (preg_match('/https:\/\/www\.google\.com\/maps\//', $maps_url)) {
         $pattern = '/https:\/\/www\.google\.com\/maps\/embed\?pb=[a-zA-Z0-9!\.]+\!2d(-*\w+\.\w+)\!3d(-*\w+\.\w+)/';
         preg_match($pattern, $maps_url, $matches);
-        // $pattern = '/[ぁ-んァ-ヶーa-zA-Z0-9一-龠０-９、。 \n\r]+名称：(.*)/u';
-        // preg_match($pattern, $xpath->evaluate('string(.)', $node), $matched_detail);
+        $pattern = '/https:\/\/www\.google\.com\/maps\/embed\?pb=[a-zA-Z0-9!\.%]+\!2s(.+)\!5e/';
+        preg_match($pattern, $maps_url, $matched_detail);
+        if (count($matched_detail) > 0) {
+          $detail = str_replace('+', ' ', $matched_detail[1]);
+        } else {
+          $detail = '詳細は記事をご覧ください';
+        }
         $locations[] = [
           'lng' => $matches[1],
           'lat' => $matches[2],
-          'detail' => '詳細は記事をご覧ください',
+          'detail' => $detail,
         ];
       }
     }
@@ -102,11 +107,11 @@ class MarkerMaker {
         map: map,
         title: "Hello World!"
       });
-      var infowindow = new google.maps.InfoWindow({
-        content: "' . $location['detail'] . '"
+      var infowindow' . $count . '= new google.maps.InfoWindow({
+        content: "' . ($count + 1) . ' : ' . $location['detail'] . '"
       });
       marker' . $count . '.addListener("click", function() {
-        infowindow.open(map, marker' . $count . ');
+        infowindow' . $count . '.open(map, marker' . $count . ');
       });
       fitBounds.extend(new google.maps.LatLng({
         lat: ' . $location['lat'] . ',
