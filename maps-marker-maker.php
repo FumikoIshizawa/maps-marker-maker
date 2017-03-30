@@ -56,6 +56,11 @@ function mmm_add_plugin_menu() {
   );
   register_setting(
     'mmm-group',
+    'mmm_map_height',
+    'mmm_register_map_height'
+  );
+  register_setting(
+    'mmm-group',
     'mmm_nodetail_text',
     'mmm_register_nodetail_text'
   );

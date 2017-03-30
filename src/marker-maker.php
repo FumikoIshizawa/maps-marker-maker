@@ -12,10 +12,12 @@ class MarkerMaker {
       $center_lat = $locations[0]['lat'];
       $center_lng = $locations[1]['lng'];
       $markers_html = $this->create_markers_html($locations);
-      $map_color = '#00ffe6';
       $map_color = get_site_option('mmm_map_color');
+      $map_color = $map_color ? $map_color : '#00ffe6';
+      $map_height = get_site_option('mmm_map_height');
+      $map_height = $map_height ? $map_height : '400px';
 
-      return '<div id="locations_map" style="height:400px;"></div>
+      return '<div id="locations_map" style="height:' . $map_height . ';"></div>
         <script>
           var map;
           function initMap() {
@@ -71,13 +73,13 @@ class MarkerMaker {
     @$dom->loadHTML($this->content);
     $xpath = new DOMXPath($dom);
 
-    if ($xpath->evaluate('string(//div[@class="info_tmp"]/iframe/@src)') == '') {
+    if ($xpath->evaluate('string(//iframe/@src)') == '') {
       return false;
     }
 
     $locations = [];
-    foreach ($xpath->query('//div[@class="info_tmp"]') as $node) {
-      $maps_url = $xpath->evaluate('string(.//iframe/@src)', $node);
+    foreach ($xpath->query('//iframe') as $node) {
+      $maps_url = $xpath->evaluate('string(./@src)', $node);
       if (preg_match('/https:\/\/www\.google\.com\/maps\//', $maps_url)) {
         $pattern = '/https:\/\/www\.google\.com\/maps\/embed\?pb=[a-zA-Z0-9!\.]+\!2d(-*\w+\.\w+)\!3d(-*\w+\.\w+)/';
         preg_match($pattern, $maps_url, $matches);
@@ -105,7 +107,7 @@ class MarkerMaker {
       $this->content .= 'var marker' . $count . ' = new google.maps.Marker({
         position: {lat: ' . $location['lat'] . ', lng: ' . $location['lng'] . '},
         map: map,
-        title: "Hello World!"
+        title: "Location Map"
       });
       var infowindow' . $count . '= new google.maps.InfoWindow({
         content: "' . ($count + 1) . ' : ' . $location['detail'] . '"

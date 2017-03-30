@@ -1,6 +1,7 @@
 <?php
   $API_KEY = get_site_option('mmm_api_key');
   $MAP_COLOR = get_site_option('mmm_map_color');
+  $MAP_HEIGHT = get_site_option('mmm_map_height');
   $NODETAIL_TEXT = get_site_option('mmm_nodetail_text');
 ?>
 <div class="wrap">
@@ -27,10 +28,17 @@
       </td>
     </tr>
     <tr>
+      <th scope="row"><label for="mmm_map_height">Map Height(default: 400px)</label></th>
+      <td>
+        <input type="hidden" name="mmm_map_height" value="0">
+        <label for="mmm_map_height"><input type="text" id="mmm_map_height" name="mmm_map_height" size="10" value="<?php echo $MAP_HEIGHT; ?>"/></input></label>
+      </td>
+    </tr>
+    <tr>
       <th scope="row"><label for="mmm_nodetail_text">Default Detail Text</label></th>
       <td>
         <input type="hidden" name="mmm_nodetail_text" value="0">
-        <label for="mmm_nodetail_text"><input type="text" id="mmm_nodetail_text" name="mmm_nodetail_text" size="30" value="<?php echo $NODETAIL_TEXT; ?>"/></input></label> 
+        <label for="mmm_nodetail_text"><input type="text" id="mmm_nodetail_text" name="mmm_nodetail_text" size="30" value="<?php echo $NODETAIL_TEXT; ?>"/></input></label>
       </td>
     </tr>
   </tbody>
