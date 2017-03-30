@@ -54,6 +54,11 @@ function mmm_add_plugin_menu() {
     'mmm_map_color',
     'mmm_register_map_color'
   );
+  register_setting(
+    'mmm-group',
+    'mmm_nodetail_text',
+    'mmm_register_nodetail_text'
+  );
 }
 add_action('admin_menu', 'mmm_add_plugin_menu');
 

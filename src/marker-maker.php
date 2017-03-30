@@ -86,7 +86,7 @@ class MarkerMaker {
         if (count($matched_detail) > 0) {
           $detail = str_replace('+', ' ', $matched_detail[1]);
         } else {
-          $detail = '詳細は記事をご覧ください';
+          $detail = get_site_option('mmm_nodetail_text');
         }
         $locations[] = [
           'lng' => $matches[1],
