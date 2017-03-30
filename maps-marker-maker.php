@@ -28,11 +28,14 @@ License: GPL2
 require 'src/marker-maker.php';
 
 function mmm_make_markers($content) {
-  $markers = new MarkerMaker($content);
-  return $markers->has_or_create_locations();
+  global $post;
+  $is_shown = get_post_meta($post->ID, 'mmm_is_shown', true);
+  if ($is_shown != 'on') {
+    $markers = new MarkerMaker($content);
+    return $markers->has_or_create_locations();
+  }
 }
 
-add_action( 'admin_menu', 'mmm_add_plugin_menu' );
 function mmm_add_plugin_menu() {
   add_options_page(
     'Maps Marker Maker',
@@ -52,6 +55,7 @@ function mmm_add_plugin_menu() {
     'mmm_register_map_color'
   );
 }
+add_action('admin_menu', 'mmm_add_plugin_menu');
 
 function mmm_show_plugin_page() {
   include_once('views/settings.php');
@@ -60,4 +64,29 @@ function mmm_show_plugin_page() {
 function mmm_register_api_key($input) {
   return $input;
 }
+
+function mmm_add_meta_box($content) {
+  add_meta_box('mmm_meta_box', 'Maps Maker Maker', 'mmm_meta_box', 'post', 'advanced', 'high');
+}
+
+function mmm_meta_box() {
+  include_once('views/post-settings.php');
+}
+add_action('admin_init', 'mmm_add_meta_box');
+
+function mmm_save_post($post_id) {
+  if (array_key_exists('post_type', $_POST) && 'page' == $_POST['post_type']) {
+    if (!current_user_can('edit_page', $post_id)) {
+      return $post_id;
+    }
+  } elseif (!current_user_can('edit_post', $post_id)) {
+    return $post_id;
+  }
+
+  $value = (isset($_POST['mmm_is_shown'])) ? $_POST['mmm_is_shown'] : null;
+  if (!add_post_meta($post_id, 'mmm_is_shown', $value, true)) {
+    update_post_meta($post_id, 'mmm_is_shown', $value);
+  }
+}
+add_action('save_post', 'mmm_save_post');
 ?>
