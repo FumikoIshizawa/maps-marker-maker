@@ -6,12 +6,12 @@ class MarkerMaker {
     $this->content = $content;
   }
 
-  public function has_or_create_locations() {
-    if ($locations = $this->has_locations($this->content)) {
+  public function mmm_has_or_create_locations() {
+    if ($locations = $this->mmm_has_locations($this->content)) {
       $API_KEY = get_site_option('mmm_api_key');
       $center_lat = $locations[0]['lat'];
       $center_lng = $locations[1]['lng'];
-      $markers_html = $this->create_markers_html($locations);
+      $markers_html = $this->mmm_create_markers_html($locations);
       $map_color = get_site_option('mmm_map_color');
       $map_color = $map_color ? $map_color : '#00ffe6';
       $map_height = get_site_option('mmm_map_height');
@@ -67,7 +67,7 @@ class MarkerMaker {
     }
   }
 
-  function has_locations() {
+  function mmm_has_locations() {
     $this->content = mb_convert_encoding($this->content, "HTML-ENTITIES", "auto");
     $dom = new DOMDocument;
     @$dom->loadHTML($this->content);
@@ -100,7 +100,7 @@ class MarkerMaker {
     return $locations;
   }
 
-  function create_markers_html($locations) {
+  function mmm_create_markers_html($locations) {
     $this->content = '';
     $count = 0;
     foreach ($locations as $location) {

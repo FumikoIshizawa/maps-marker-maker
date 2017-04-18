@@ -32,7 +32,7 @@ function mmm_make_markers($content) {
   $is_shown = get_post_meta($post->ID, 'mmm_is_shown', true);
   if ($is_shown != 'on') {
     $markers = new MarkerMaker($content);
-    return $markers->has_or_create_locations();
+    return $markers->mmm_has_or_create_locations();
   }
 }
 
@@ -68,7 +68,7 @@ function mmm_add_plugin_menu() {
 add_action('admin_menu', 'mmm_add_plugin_menu');
 
 function mmm_show_plugin_page() {
-  include_once('views/settings.php');
+  include_once('views/mmm_settings.php');
 }
 
 function mmm_register_api_key($input) {
@@ -80,7 +80,7 @@ function mmm_add_meta_box($content) {
 }
 
 function mmm_meta_box() {
-  include_once('views/post-settings.php');
+  include_once('views/mmm_post-settings.php');
 }
 add_action('admin_init', 'mmm_add_meta_box');
 
